@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class LoginController extends Controller
@@ -12,12 +13,9 @@ class LoginController extends Controller
         return view('login');
     }
 
-    public function authenticate(Request $request)
+    public function authenticate(LoginRequest $request)
     {
-       $credentials = $request->validate([
-            'email'=>'required|email',
-            'password'=>'required|min:6',
-        ]);
+       $credentials = $request->only('email','password');
 
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
