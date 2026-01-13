@@ -1,6 +1,6 @@
 <x-layout>
     <main class="py-10">
-        <section class="mt-4 bg-white max-w-150 mx-auto p-10 pb-6 border-2">
+        <section class="mt-4 bg-white max-w-[600px] mx-auto p-10 pb-6 border-2">
             <h1 class="font-bold text-xl">Faça login</h1>
             <p>Insira seus dados para acessar</p>
 
