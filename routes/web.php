@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\HabitController;
 
+
 //Site
 Route::get('/inicio',[SiteController::class, 'index'])->name('site.index');
 
@@ -22,5 +23,6 @@ Route::middleware('auth')->group(function (){
     // Habits
     Route::get('/dashboard/habits/create', [HabitController::class,'create'])->name('habit.create');
     Route::post('/dashboard/habits', [HabitController::class,'store'])->name('habit.store');
+    Route::delete('/dashboard/habits/{habit}', [HabitController::class, 'destroy'])->name('habit.destroy');
 
 });

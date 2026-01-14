@@ -23,10 +23,11 @@ class HabitController extends Controller
     public function store(HabitRequest $request)
     {
         $validated = $request->validated();
-        Auth()->user()->habits()->create($validated);
+        auth()->user()->habits()->create($validated);
+
         return redirect()
-        ->route('site.dashboard')
-        ->with('success', 'Hábito criado com sucesso!');
+            ->route('site.dashboard')
+            ->with('success', 'Hábito criado com sucesso!');
     }
 
     /**
@@ -48,8 +49,15 @@ class HabitController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Habit $habit)
+    public function destroy(Habit $habit) 
     {
-        //
+        if ($habit->user_id != auth()->user()->id) {
+            abort(403, 'Esse hábito não pertence a você.');
+        }
+
+        $habit->delete();
+        return redirect()
+            ->route('site.dashboard')
+            ->with('success', 'Hábito removido com sucesso!');
     }
 }
