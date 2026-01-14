@@ -7,6 +7,7 @@ use App\Models\Habit;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+
 class HabitController extends Controller
 {
     /**
@@ -14,7 +15,7 @@ class HabitController extends Controller
      */
     public function create(): View
     {
-        return view('habits.create');
+        return view('habits.create',compact('habit'));
     }
 
     /**
@@ -35,15 +36,22 @@ class HabitController extends Controller
      */
     public function edit(Habit $habit)
     {
-        //
+        return view('habits.edit', compact('habit'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Habit $habit)
+    public function update(HabitRequest $request, Habit $habit)
     {
-        //
+        
+        if ($habit->user_id != auth()->user()->id) {
+            abort(403, 'Esse hábito não pertence a você.');
+        }
+        $habit->update($request->all());
+        return redirect()
+            ->route('site.dashboard')
+            ->with('sucess', 'Hábito atualizado com sucesso!');
     }
 
     /**
