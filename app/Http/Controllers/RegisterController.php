@@ -19,6 +19,6 @@ class RegisterController extends Controller
             'password'=>$request->input('password'),
         ]);
         Auth::login($User);
-        return redirect()->route('site.dashboard');
+        return redirect()->route('habits.index');
     }
 }
