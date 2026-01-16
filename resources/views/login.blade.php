@@ -1,11 +1,15 @@
 <x-layout>
     <main class="py-10">
-        <section class="mt-4 bg-white max-w-[600px] mx-auto p-10 pb-6 border-2">
+        <section class="bg-white max-w-[600px] mx-auto p-10 pb-6 mt-4 habit-shadow-lg ">
             <h1 class="font-bold text-xl">Faça login</h1>
             <p>Insira seus dados para acessar</p>
 
 
-            <form action= {{ route ('auth.login') }} method="POST" class="flex flex-col">
+            <form
+                action = {{ route ('auth.login') }}
+                method="POST"
+                class="flex flex-col
+                ">
                 @csrf
 
 
@@ -16,7 +20,7 @@
             type="email"
             name="email"
             placeholder="your@email.com"
-            class="bg-white border-2 p-2 @error('email')border-red-500
+            class="bg-white habit-shadow p-2 @error('email')border-red-500
             @enderror" >
 
             @error('email')
@@ -35,17 +39,17 @@
             type="password"
             name="password"
             placeholder="********"
-            class="bg-white border-2 p-2 @error('password') border-red-500 @enderror">
+            class="bg-white habit-shadow p-2 @error('password') border-red-500 @enderror">
 
             @error('password')
             <p class="text-red-500 text-sm">
-                {{ $message }}
+                {{ $message }} 
             </p>
             @enderror
             </div>
             <button
             type="submit"
-            class="bg-white border-2 p-2 hover:opacity-75 transition">
+            class="habit-shadow-lg p-2 bg-habit-orange habit-btn">
             Entrar
             </button>
             </form>

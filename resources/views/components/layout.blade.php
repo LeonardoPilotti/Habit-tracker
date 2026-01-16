@@ -8,7 +8,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-[#ffedd6]">
+<body class="bg-[#FFEDD6]">
     <!--HEADER -->
     <x-header />
 
