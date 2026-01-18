@@ -17,11 +17,18 @@ class Habit extends Model
     public function user():belongsTo
     {
         return $this->belongsTo(User::class);
-    }
+    }   
 
     //Um hábito pode ter muitos registros
     public function habitLogs(): hasMany
     {
         return $this->hasMany(HabitLog::class);
+    }
+
+    public function wasCompletedToday():bool
+    {
+        return $this->habitLogs
+            ->where('completed_at', \Carbon\Carbon::today()->toDateString())
+            ->isNotEmpty();
     }
 }
