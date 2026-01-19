@@ -1,17 +1,19 @@
 <footer class="bg-white border-t-2 p-4">
-    <p>
+    <p class="text-center">
         Criado por 
         <a href="https://instagram.com/leopilottig"
             target="_blank"
-            class="underline hover:text-habit-orange"
-            >Leonardo Pilotti.
-        </a>
+            class="font-bold  underline hover:text-habit-orange"
+            >Leonardo Pilotti.</a>
+
+
         O código fonte está no
         <a
             href="https://github.com/LeonardoPilotti/Habit-tracker"
             target="_blank"
-            class="underline hover:text-habit-orange">
+            class="font-bold underline hover:text-habit-orange">
             Github
         </a>
+
     </p>
 </footer>
