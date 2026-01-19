@@ -8,9 +8,9 @@
                 </li>
 
                 <li>
-                    <a href= "#"
+                    <a href= "{{ route('habits.history') }}"
                     
-                        class="text-md border-r-2 border-habit-orange pr-2 hover:underline"
+                        class="{{Route::is('habits.history') ? 'font-bold underline' : ''}} text-md border-r-2 border-habit-orange pr-2 hover:underline"
                         >Histórico
                     </a>
                     

@@ -9,7 +9,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\HabitLog;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests; 
 
 
 class HabitController extends Controller
@@ -49,7 +49,7 @@ class HabitController extends Controller
      */
     public function edit(Habit $habit)
     {
-        $this->autorize('update', $habit);
+        $this->authorize('update', $habit);
         return view('habits.edit', compact('habit'));
     }
 
@@ -63,7 +63,7 @@ class HabitController extends Controller
 
         return redirect()
             ->route('habits.index')
-            ->with('sucess', 'Hábito atualizado com sucesso!');
+            ->with('success', 'Hábito atualizado com sucesso!');
     }
 
     /**
@@ -117,5 +117,21 @@ class HabitController extends Controller
         return redirect()
          ->route('habits.index')
          ->with('success', $message);
+    }
+
+    public function history(): View
+    {   
+        $selectedYear = Carbon::now()->year;
+
+        $startDate = Carbon::create($selectedYear, 1, 1);
+        $endDate = Carbon::create($selectedYear, 12, 31);
+
+        //3. Trazer os hábitos com os logs filtrados pelo ano atual
+        $habits = Auth::user()->habits()
+            ->with(['habitLogs' => function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('completed_at', [$startDate, $endDate]);
+            }])
+        ->get();
+        return view('habits.history', compact('selectedYear', 'habits'));
     }
 }
