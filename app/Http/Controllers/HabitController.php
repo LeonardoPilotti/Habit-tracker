@@ -4,22 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\HabitRequest;
 use App\Models\Habit;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 use App\Models\HabitLog;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests; 
-
+use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class HabitController extends Controller
 {
     use AuthorizesRequests;
+
     public function index(): View
     {
         $habits = Auth::user()->habits()
-        ->with('habitLogs')
-        ->get();
+            ->with('habitLogs')
+            ->get();
+
         return view('dashboard', compact('habits'));
     }
 
@@ -50,6 +50,7 @@ class HabitController extends Controller
     public function edit(Habit $habit)
     {
         $this->authorize('update', $habit);
+
         return view('habits.edit', compact('habit'));
     }
 
@@ -69,19 +70,21 @@ class HabitController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Habit $habit) 
+    public function destroy(Habit $habit)
     {
         $this->authorize('delete', $habit);
 
         $habit->delete();
+
         return redirect()
             ->route('habits.index')
-            ->with('success', 'Hábito removido com sucesso!');
+            ->with('warning', 'Hábito removido com sucesso!');
     }
 
     public function settings()
     {
-        $habits =Auth::user()->habits;
+        $habits = Auth::user()->habits;
+
         return view('habits.settings', compact('habits'));
     }
 
@@ -89,55 +92,53 @@ class HabitController extends Controller
     {
         $this->authorize('toggle', $habit);
 
-        //2.Pegar a data atual
         $today = Carbon::today()->toDateString();
-         
-        //2.1 Pegar o log
+
         $log = HabitLog::query()
             ->where('habit_id', $habit->id)
             ->where('completed_at', $today)
             ->first();
 
-        //3.Validar se nessa data já existe um registro
-        if ($log){
-            //4.Se existir, remover o registro
+        if ($log) {
             $log->delete();
+            $alert = 'warning';
             $message = 'Hábito desmarcado';
         } else {
-            //5.Se não existir, criar o registro
-            HabitLog::create([
-                'user_id' => Auth::user()->id,
-                'habit_id' => $habit->id,
-                'completed_at' => $today,
-            ]);
+            HabitLog::query()
+                ->create([
+                    'user_id' => Auth::user()->id,
+                    'habit_id' => $habit->id,
+                    'completed_at' => $today,
+                ]);
+            $alert = 'success';
             $message = 'Hábito concluído 👏';
         }
 
-        //6.Retornar para a pagina anterior
         return redirect()
-         ->route('habits.index')
-         ->with('success', $message);
+            ->route('habits.index')
+            ->with($alert, $message);
     }
 
     public function history(?int $year = null): View
-    {   
-        $selectedYear = $year ??Carbon::now()->year;
+    {
+        $selectedYear = $year ?? Carbon::now()->year;
 
         $avaibleYears = range(2024, Carbon::now()->year);
 
-        if (!in_array($selectedYear, $avaibleYears)) {
+        if (! in_array($selectedYear, $avaibleYears)) {
             abort(404, 'Ano inválido.');
         }
 
         $startDate = Carbon::create($selectedYear, 1, 1);
         $endDate = Carbon::create($selectedYear, 12, 31);
 
-        //3. Trazer os hábitos com os logs filtrados pelo ano atual
+        // 3. Trazer os hábitos com os logs filtrados pelo ano atual
         $habits = Auth::user()->habits()
             ->with(['habitLogs' => function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('completed_at', [$startDate, $endDate]);
             }])
-        ->get();
+            ->get();
+
         return view('habits.history', compact('selectedYear', 'habits', 'avaibleYears'));
     }
 }
