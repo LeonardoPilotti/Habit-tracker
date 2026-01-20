@@ -126,7 +126,7 @@ class HabitController extends Controller
         $avaibleYears = range(2024, Carbon::now()->year);
 
         if (! in_array($selectedYear, $avaibleYears)) {
-            abort(404, 'Ano inválido.');
+            abort(404, 'Ano inválido');
         }
 
         $startDate = Carbon::create($selectedYear, 1, 1);

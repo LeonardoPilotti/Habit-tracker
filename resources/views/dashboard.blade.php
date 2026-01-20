@@ -1,12 +1,16 @@
  <x-layout>
-     <main class="max-w-5xl mx-auto py-10 px-4 min-h-[80vh]">
+     <main class="max-w-5xl mx-auto py-10 px-4 min-h-[80vh] w-full">
          {{-- NAVBAR --}}
          <x-navbar />
 
          <div class="flex flex-col gap-4 items-start">
-             <h2 class="text-lg mt-8 font-bold">
+        <x-title>
+            {{ \Carbon\Carbon::now()->locale('pt_BR')->translatedFormat('l, d \d\e F') }}
+        </x-title>
+
+             <h1 class="text-lg mt-8 font-bold">
                  {{ \Carbon\Carbon::now()->locale('pt_BR')->translatedFormat('l, d \d\e F') }}
-             </h2>
+             </h1>
              <ul class="flex flex-col gap-2 w-full">
                  @forelse($habits as $item)
                      <li class="habit-shadow-lg p-2 bg-[#FFDAAC]">
