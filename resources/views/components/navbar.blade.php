@@ -16,7 +16,7 @@
                     
                 <li>
                     <a href= "#"
-                        class="text-md border-r-2 border-habit-orange pr-2 hover:underline cursor-rnot-allowed"
+                        class="text-md border-r-2 border-habit-orange pr-2 hover:underline cursor-not-allowed"
                         >Calendário🔒
                     </a>
 
